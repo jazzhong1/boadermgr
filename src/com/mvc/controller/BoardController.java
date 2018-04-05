@@ -14,7 +14,7 @@ import com.mvc.view.MemberView;
 import static common.JDBCTemplate.*;
 
 public class BoardController {
-
+//
 	private ArrayList<Board> list;
 	private BoardService service;
 	private BoardView view;
