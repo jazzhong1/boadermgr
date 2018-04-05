@@ -12,11 +12,17 @@ import java.util.Properties;
 import java.util.Scanner;
 
 import com.mvc.model.vo.Board;
+import com.mvc.model.vo.Member;
 
 import static common.JDBCTemplate.*;
 
 public class BoardDao {
+	private PreparedStatement stmt;
+	private ResultSet rs;
+	private ArrayList<Board> list;
+	private int result;
 	private Properties prop;
+	private Board board;
 
 	public BoardDao() {
 		prop = new Properties();
@@ -27,11 +33,14 @@ public class BoardDao {
 				e.printStackTrace();
 			}
 		}
+		stmt = null;
+		rs = null;
+		list = null;
+		result = 0;
+		board = null;
 	}
 
 	public int inertBoard(Connection conn, Board b) {
-		int result = 0;
-		PreparedStatement stmt = null;
 		try {
 			stmt = conn.prepareStatement(prop.getProperty("inertBoard"));
 			stmt.setString(1, b.getDiv());
@@ -52,9 +61,6 @@ public class BoardDao {
 	}
 
 	public ArrayList<Board> selectAllBoard(Connection conn) {
-		ArrayList<Board> list = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
 		try {
 			stmt = conn.prepareStatement(prop.getProperty("selectAllBoard"));
 			rs = stmt.executeQuery();
@@ -82,16 +88,15 @@ public class BoardDao {
 
 	public ArrayList<Board> searchBoardWriter(Connection conn, String writer) {
 
-		ArrayList<Board> list = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
 		try {
+			list = new ArrayList<Board>();
 			stmt = conn.prepareStatement(prop.getProperty("searchBoardWriter"));
 			stmt.setString(1, writer);
-			rs = stmt.executeQuery();
-			list = new ArrayList<Board>();
-			while (rs.next()) {
-				Board board = new Board();
+			result = stmt.executeUpdate();
+			if (result > 0) {
+				rs = stmt.executeQuery();
+				rs.next();
+				board = new Board();
 				board.setDiv(rs.getString("div"));
 				board.setTitle(rs.getString("title"));
 				board.setComments(rs.getString("comments"));
@@ -100,7 +105,6 @@ public class BoardDao {
 
 				list.add(board);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -113,16 +117,15 @@ public class BoardDao {
 
 	public ArrayList<Board> searchBoardTitle(Connection conn, String Title) {
 
-		ArrayList<Board> list = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
 		try {
+			list = new ArrayList<Board>();
 			stmt = conn.prepareStatement(prop.getProperty("searchBoardTitle"));
 			stmt.setString(1, Title);
-			rs = stmt.executeQuery();
-			list = new ArrayList<Board>();
-			while (rs.next()) {
-				Board board = new Board();
+			result = stmt.executeUpdate();
+			if (result > 0) {
+				rs = stmt.executeQuery();
+				rs.next();
+				board = new Board();
 				board.setDiv(rs.getString("div"));
 				board.setTitle(rs.getString("title"));
 				board.setComments(rs.getString("comments"));
@@ -131,7 +134,6 @@ public class BoardDao {
 
 				list.add(board);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -141,14 +143,12 @@ public class BoardDao {
 		return list;
 	}
 
-	public int updateBoard(Connection conn, Board b,String writer) {
-		int result = 0;
-		PreparedStatement stmt = null;
+	public int updateBoard(Connection conn, Board b) {
 		try {
 			stmt = conn.prepareStatement(prop.getProperty("updateBoard"));
-			stmt.setString(1, b.getTitle());
+			stmt.setString(1, b.getDiv());
 			stmt.setString(2, b.getComments());
-			stmt.setString(3, writer);
+			stmt.setString(3, b.getTitle());
 			result = stmt.executeUpdate();
 
 		} catch (Exception e) {
@@ -162,8 +162,6 @@ public class BoardDao {
 	}
 
 	public int deleteBoard(Connection conn, String title) {
-		int result = 0;
-		PreparedStatement stmt = null;
 		try {
 			stmt = conn.prepareStatement(prop.getProperty("deleteBoard"));
 			stmt.setString(1, title);

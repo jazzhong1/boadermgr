@@ -10,26 +10,32 @@ import java.util.ArrayList;
 
 import com.mvc.model.dao.BoardDao;
 import com.mvc.model.vo.Board;
+import com.mvc.model.vo.Member;
 import com.mvc.view.BoardView;
 
 public class BoardService {
 	private Connection conn;
+	private BoardDao dao;
+	private ArrayList<Board> list;
+	private int result;
 
 	public BoardService() {
-		// TODO Auto-generated constructor stub
+		conn = getConnect();
+		dao=new BoardDao();
+		list = null;
+		result = 0;
 	}
 
 	public ArrayList<Board> selectAllBoard() {
-		conn=getConnect();
-		ArrayList<Board> list=new BoardDao().selectAllBoard(conn);
+		conn = getConnect();
+		list = dao.selectAllBoard(conn);
 		close(conn);
 		return list;
 	}
 
-	public int inertBoard() {
+	public int inertBoard(Board board) {
 		conn = getConnect();
-		Board b = new BoardView().insertBoard();
-		int result = new BoardDao().inertBoard(conn, b);
+		result = dao.inertBoard(conn, board);
 
 		if (result > 0) {
 			commit(conn);
@@ -38,67 +44,47 @@ public class BoardService {
 		}
 
 		close(conn);
-		
+
 		return result;
 	}
 
-	public ArrayList<Board>  searchBoardWriter() {
+	public ArrayList<Board> searchBoardWriter(String writer) {
 
-		conn=getConnect();
-		String writer= new BoardView().find_wirter();
-		ArrayList<Board> list=new BoardDao().searchBoardWriter(conn, writer);
-		if(list.size()>0&& list!=null){
-			new BoardView().displayList(list);
-		}
-		else{
-			new BoardView().displayError("실패");
-		}
-		
+		conn = getConnect();
+		list = new BoardDao().searchBoardWriter(conn, writer);
 		close(conn);
 		return list;
 	}
 
-	public int updateBoard() {
-		conn=getConnect();
-		Board board=new BoardView().updateBoard();
-		String writer=new BoardView().find_wirter();
-		int result=new BoardDao().updateBoard(conn, board,writer);
-		if(result>0){
-			commit(conn);
-		}
-		else{
-			rollback(conn);
-		}
-		close(conn);
-		
-		return result;
-	}
-
-	public int deleteBoard() {
+	public int updateBoard(Board board) {
 		conn = getConnect();
-		String title = new BoardView().find_title();
-		int result = new BoardDao().deleteBoard(conn, title);
+		result = new BoardDao().updateBoard(conn, board);
 		if (result > 0) {
 			commit(conn);
 		} else {
 			rollback(conn);
 		}
 		close(conn);
-		
+
 		return result;
 	}
 
-	public ArrayList<Board> searchBoardTitle() {
-		conn=getConnect();
-		String title= new BoardView().find_title();
-		ArrayList<Board> list=new BoardDao().searchBoardTitle(conn, title);
-		if(list.size()>0&& list!=null){
-			new BoardView().displayList(list);
+	public int deleteBoard(String title) {
+		conn = getConnect();
+		result = dao.deleteBoard(conn, title);
+		if (result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
 		}
-		else{
-			new BoardView().displayError("실패");
-		}
-		
+		close(conn);
+
+		return result;
+	}
+
+	public ArrayList<Board> searchBoardTitle(String title) {
+		conn = getConnect();
+		list = dao.searchBoardTitle(conn, title);
 		close(conn);
 		return list;
 	}
