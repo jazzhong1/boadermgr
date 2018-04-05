@@ -7,8 +7,8 @@ public class Member {
 	private String member_pwd;
 	private String member_name;
 	private String email;
-	private String address;
 	private String phone;
+	private String address;
 	private Date enroll_date;
 	
 	public Member() {
@@ -39,12 +39,6 @@ public class Member {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
 	
 	public String getPhone() {
 		return phone;
@@ -59,11 +53,21 @@ public class Member {
 		this.enroll_date = enroll_date;
 	}
 	
+	public String getAddress() {
+		return address;
+	}
+	
+	
+	public void setAddress(String address) {
+		this.address = address;
+	}
 	@Override
 	public String toString() {
 		
-		return member_id+"\t"+member_pwd+"\t"+member_name+"\t"+"\t\t"+email+"\t\t"+address+"\t\t"+phone+"\t\t"+enroll_date;
+		return member_id+"\t"+member_pwd+"\t"+member_name+"\t"+email+"\t\t"+phone+"\t"+enroll_date;
 
 	}
+
+
 
 }
