@@ -8,10 +8,8 @@ import com.mvc.view.MemberView;
 
 public class MemberController {
 
-	private ArrayList<Member> list;
 	private MemberService service;
 	private MemberView view;
-	private int result;
 
 	public MemberController() {
 		service = new MemberService();
@@ -19,7 +17,7 @@ public class MemberController {
 	}
 
 	public void selectAllMember() {
-		list = service.selectAllMember();
+		ArrayList<Member> list = service.selectAllMember();
 		if (list != null && list.size() > 0) {
 			view.displayList(list);
 		} else {
@@ -29,7 +27,7 @@ public class MemberController {
 	}
 
 	public void searchMemberId(String id) {
-		list = service.searchMemberId(id);
+		ArrayList<Member> list = service.searchMemberId(id);
 		if (list != null && list.size() > 0) {
 			view.displayList(list);
 		} else {
@@ -38,7 +36,7 @@ public class MemberController {
 	}
 
 	public void inertMember(Member member) {
-		result = service.inertMember(member);
+		int result = service.inertMember(member);
 		if (result > 0) {
 			view.displaySuccess("성공");
 		} else {
@@ -48,7 +46,7 @@ public class MemberController {
 	}
 
 	public void updateMember(Member member) {
-		result = service.updateMember(member);
+		int result = service.updateMember(member);
 		if (result > 0) {
 			view.displaySuccess("성공");
 		} else {
@@ -57,7 +55,7 @@ public class MemberController {
 	}
 
 	public void searchMemberName(String name) {
-		list = service.searchMemberName(name);
+		ArrayList<Member> list = service.searchMemberName(name);
 		if (list != null && list.size() > 0) {
 			view.displayList(list);
 		} else {
@@ -66,7 +64,7 @@ public class MemberController {
 	}
 
 	public void deleteMember(String id) {
-		result = service.deleteMember(id);
+		int result = service.deleteMember(id);
 		if (result > 0) {
 			view.displaySuccess("성공");
 		} else {

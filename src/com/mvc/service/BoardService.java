@@ -16,26 +16,21 @@ import com.mvc.view.BoardView;
 public class BoardService {
 	private Connection conn;
 	private BoardDao dao;
-	private ArrayList<Board> list;
-	private int result;
 
 	public BoardService() {
-		conn = getConnect();
 		dao=new BoardDao();
-		list = null;
-		result = 0;
 	}
 
 	public ArrayList<Board> selectAllBoard() {
 		conn = getConnect();
-		list = dao.selectAllBoard(conn);
+		 ArrayList<Board> list = dao.selectAllBoard(conn);
 		close(conn);
 		return list;
 	}
 
 	public int inertBoard(Board board) {
 		conn = getConnect();
-		result = dao.inertBoard(conn, board);
+		int result = dao.inertBoard(conn, board);
 
 		if (result > 0) {
 			commit(conn);
@@ -51,14 +46,14 @@ public class BoardService {
 	public ArrayList<Board> searchBoardWriter(String writer) {
 
 		conn = getConnect();
-		list = new BoardDao().searchBoardWriter(conn, writer);
+		 ArrayList<Board> list = new BoardDao().searchBoardWriter(conn, writer);
 		close(conn);
 		return list;
 	}
 
 	public int updateBoard(Board board) {
 		conn = getConnect();
-		result = new BoardDao().updateBoard(conn, board);
+		int result = new BoardDao().updateBoard(conn, board);
 		if (result > 0) {
 			commit(conn);
 		} else {
@@ -71,7 +66,7 @@ public class BoardService {
 
 	public int deleteBoard(String title) {
 		conn = getConnect();
-		result = dao.deleteBoard(conn, title);
+		int result = dao.deleteBoard(conn, title);
 		if (result > 0) {
 			commit(conn);
 		} else {
@@ -84,7 +79,7 @@ public class BoardService {
 
 	public ArrayList<Board> searchBoardTitle(String title) {
 		conn = getConnect();
-		list = dao.searchBoardTitle(conn, title);
+		 ArrayList<Board> list = dao.searchBoardTitle(conn, title);
 		close(conn);
 		return list;
 	}

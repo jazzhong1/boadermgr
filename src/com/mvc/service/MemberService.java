@@ -11,30 +11,26 @@ import static common.JDBCTemplate.*;
 public class MemberService {
 	private Connection conn;
 	private MemberDao dao;
-	private ArrayList<Member> list;
-	private int result;
 
 	public MemberService() {
 		conn = getConnect();
 		dao=new MemberDao();
-		list = null;
-		result = 0;
 	}
 
 	public ArrayList<Member> selectAllMember() {
-		list = dao.selectAllMember(conn);
+		ArrayList<Member> list = dao.selectAllMember(conn);
 		close(conn);
 		return list;
 	}
 
 	public ArrayList<Member> searchMemberId(String id) {
-		list = dao.searchMemberId(conn, id);
+		ArrayList<Member> list = dao.searchMemberId(conn, id);
 		close(conn);
 		return list;
 	}
 
 	public int inertMember(Member member) {
-		result = dao.inertMember(conn, member);
+		int result = dao.inertMember(conn, member);
 		if (result > 0) {
 			commit(conn);
 		} else {
@@ -45,7 +41,7 @@ public class MemberService {
 	}
 
 	public int updateMember(Member member) {
-		result = dao.updateMember(conn, member);
+		int result = dao.updateMember(conn, member);
 		if (result > 0) {
 			commit(conn);
 		} else {
@@ -56,13 +52,13 @@ public class MemberService {
 	}
 
 	public ArrayList<Member> searchMemberName(String name) {
-		list = dao.searchMemberName(conn, name);
+		ArrayList<Member> list = dao.searchMemberName(conn, name);
 		close(conn);
 		return list;
 	}
 
 	public int deleteMember(String id) {
-		result = dao.deleteMember(conn, id);
+		int result = dao.deleteMember(conn, id);
 		if (result > 0) {
 			commit(conn);
 		} else {

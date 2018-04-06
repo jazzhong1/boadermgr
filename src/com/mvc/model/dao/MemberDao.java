@@ -16,9 +16,6 @@ import static common.JDBCTemplate.*;
 
 public class MemberDao {
 	private PreparedStatement stmt;
-	private ResultSet rs;
-	private ArrayList<Member> list;
-	private int result;
 	private Properties prop;
 	private Member member;
 
@@ -33,17 +30,15 @@ public class MemberDao {
 			}
 		}
 		stmt = null;
-		rs = null;
-		list = null;
-		result = 0;
 		member = null;
 	}
 
 	public ArrayList<Member> selectAllMember(Connection conn) {
+		ArrayList<Member> list = new ArrayList<Member>();
+		ResultSet rs=null;
 		try {
 			stmt = conn.prepareStatement(prop.getProperty("selectAllMember"));
 			rs = stmt.executeQuery();
-			list = new ArrayList<Member>();
 			while (rs.next()) {
 				member = new Member();
 				member.setMember_id(rs.getString("member_id"));
@@ -65,13 +60,14 @@ public class MemberDao {
 
 	public ArrayList<Member> searchMemberId(Connection conn, String id) {
 
+		ArrayList<Member> list = new ArrayList<Member>();
+		ResultSet rs=null;
 		try {
 			stmt = conn.prepareStatement(prop.getProperty("searchMemberId"));
 			stmt.setString(1, id);
-			result = stmt.executeUpdate();
+			int result = stmt.executeUpdate();
 			if (result > 0) {
 				rs=stmt.executeQuery();
-				list = new ArrayList<Member>();
 				rs.next();
 				member = new Member();
 				member.setMember_id(rs.getString("member_id"));
@@ -91,7 +87,7 @@ public class MemberDao {
 	}
 
 	public int inertMember(Connection conn, Member member) {
-
+		int result=0;
 		try {
 			stmt = conn.prepareStatement(prop.getProperty("insertMember"));
 			stmt.setString(1, member.getMember_id());
@@ -111,7 +107,7 @@ public class MemberDao {
 	}
 
 	public int updateMember(Connection conn, Member member) {
-
+		int result=0;
 		try {
 			stmt = conn.prepareStatement(prop.getProperty("updateMember"));
 			stmt.setString(1, member.getPhone());
@@ -127,8 +123,10 @@ public class MemberDao {
 	}
 
 	public ArrayList<Member> searchMemberName(Connection conn, String name) {
+		int result=0;
+		ArrayList<Member> list = new ArrayList<Member>();
+		ResultSet rs=null;
 		try {
-			list = new ArrayList<Member>();
 			stmt = conn.prepareStatement(prop.getProperty("searchMemberName"));
 			stmt.setString(1, name);
 			result = stmt.executeUpdate();
@@ -153,7 +151,7 @@ public class MemberDao {
 	}
 
 	public int deleteMember(Connection conn, String id) {
-
+		int result=0;
 		try {
 			stmt = conn.prepareStatement(prop.getProperty("deleteMember"));
 			stmt.setString(1, id);

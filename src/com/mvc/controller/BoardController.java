@@ -15,10 +15,8 @@ import static common.JDBCTemplate.*;
 
 public class BoardController {
 //
-	private ArrayList<Board> list;
 	private BoardService service;
 	private BoardView view;
-	private int result;	
 	public BoardController() {
 		service = new BoardService();
 		view = new BoardView();
@@ -26,7 +24,7 @@ public class BoardController {
 
 	public void inertBoard(Board board) {
 		
-		 result=service.inertBoard(board);
+		int result=service.inertBoard(board);
 		if(result>0){
 			view.displaySuccess("성공");
 		}else{
@@ -36,7 +34,7 @@ public class BoardController {
 
 	public void selectAllBoard() {
 		
-		list=service.selectAllBoard();
+		ArrayList<Board> list=service.selectAllBoard();
 		if(list.size()>0&& list!=null){
 			view.displayList(list);
 		}
@@ -47,7 +45,7 @@ public class BoardController {
 	}
 
 	public void searchBoardWriter(String writer) {
-		list=service.searchBoardWriter(writer);
+		ArrayList<Board> list=service.searchBoardWriter(writer);
 		if(list.size()>0&& list!=null){
 			view.displayList(list);
 		}
@@ -58,7 +56,7 @@ public class BoardController {
 
 	public void updateBoard(Board board) {
 		
-		result=service.updateBoard(board);
+		int result=service.updateBoard(board);
 		if(result>0){
 			view.displaySuccess("성공");
 		}else{
@@ -68,7 +66,7 @@ public class BoardController {
 
 	public void deleteBoard(String title) {
 		
-		result=service.deleteBoard(title);
+		int result=service.deleteBoard(title);
 		if(result>0){
 			view.displaySuccess("성공");
 		}else{
@@ -77,7 +75,7 @@ public class BoardController {
 	}
 
 	public void searchBoardTitle(String title) {
-		list=service.searchBoardTitle(title);
+		ArrayList<Board> list=service.searchBoardTitle(title);
 		if(list.size()>0&& list!=null){
 			view.displayList(list);
 		}

@@ -18,9 +18,6 @@ import static common.JDBCTemplate.*;
 
 public class BoardDao {
 	private PreparedStatement stmt;
-	private ResultSet rs;
-	private ArrayList<Board> list;
-	private int result;
 	private Properties prop;
 	private Board board;
 
@@ -34,13 +31,11 @@ public class BoardDao {
 			}
 		}
 		stmt = null;
-		rs = null;
-		list = null;
-		result = 0;
 		board = null;
 	}
 
 	public int inertBoard(Connection conn, Board b) {
+		int result=0;
 		try {
 			stmt = conn.prepareStatement(prop.getProperty("inertBoard"));
 			stmt.setString(1, b.getDiv());
@@ -61,10 +56,11 @@ public class BoardDao {
 	}
 
 	public ArrayList<Board> selectAllBoard(Connection conn) {
+		ResultSet rs=null;
+		ArrayList<Board> list = new ArrayList<Board>();
 		try {
 			stmt = conn.prepareStatement(prop.getProperty("selectAllBoard"));
 			rs = stmt.executeQuery();
-			list = new ArrayList<Board>();
 			while (rs.next()) {
 				Board board = new Board();
 				board.setDiv(rs.getString("div"));
@@ -87,9 +83,10 @@ public class BoardDao {
 	}
 
 	public ArrayList<Board> searchBoardWriter(Connection conn, String writer) {
-
+		ResultSet rs=null;
+		ArrayList<Board> list = new ArrayList<Board>();
+		int result=0;
 		try {
-			list = new ArrayList<Board>();
 			stmt = conn.prepareStatement(prop.getProperty("searchBoardWriter"));
 			stmt.setString(1, writer);
 			result = stmt.executeUpdate();
@@ -116,9 +113,11 @@ public class BoardDao {
 	}
 
 	public ArrayList<Board> searchBoardTitle(Connection conn, String Title) {
+		ResultSet rs=null;
+		ArrayList<Board> list = new ArrayList<Board>();
+		int result=0;
 
 		try {
-			list = new ArrayList<Board>();
 			stmt = conn.prepareStatement(prop.getProperty("searchBoardTitle"));
 			stmt.setString(1, Title);
 			result = stmt.executeUpdate();
@@ -144,6 +143,7 @@ public class BoardDao {
 	}
 
 	public int updateBoard(Connection conn, Board b) {
+		int result=0;
 		try {
 			stmt = conn.prepareStatement(prop.getProperty("updateBoard"));
 			stmt.setString(1, b.getDiv());
@@ -162,6 +162,7 @@ public class BoardDao {
 	}
 
 	public int deleteBoard(Connection conn, String title) {
+		int result=0;
 		try {
 			stmt = conn.prepareStatement(prop.getProperty("deleteBoard"));
 			stmt.setString(1, title);
